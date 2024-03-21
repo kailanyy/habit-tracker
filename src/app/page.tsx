@@ -1,41 +1,31 @@
 "use client";
 
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomeActionItem from "../components/HomeActionItem";
 import { Action } from "@/src/types";
+import { NewActionDialog } from "../components/NewActionDialog";
+import { CreateNote } from "../components/CreateNote";
 import { Button } from "@/components/ui/button";
-import RegisterActionDialog from "../components/RegisterActionDialog";
+import { Calendar } from "@/components/ui/calendar";
 
-const MOCKED_ACTION_INITIAL_STATE: Action[] = [
-  {
-    id: "1a",
-    type: "good",
-    title: "Exercício",
-    points: 50,
-  },
-  {
-    id: "2b",
-    type: "bad",
-    title: "Não lavei o rosto",
-    points: -25,
-  },
-  {
-    id: "3c",
-    type: "diary",
-    title: "Hoje a Amora estava extra carinhosa.",
-  },
-];
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function Home() {
-  const [actions, setActions] = useState<Action[]>([
-    ...MOCKED_ACTION_INITIAL_STATE,
-  ]);
+  const [actions, setActions] = useState<Action[]>([]);
   const points = actions.reduce(function (acc, obj) {
     if (obj.points) return acc + obj.points;
     return acc;
   }, 0);
+
   const today = dayjs().format("DD/MM/YYYY");
+
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   return (
     <main className="flex min-h-screen flex-col gap-6 p-24">
@@ -44,12 +34,37 @@ export default function Home() {
         <p className={points > 0 ? "text-green-600" : "text-red-600"}>
           {points} pts
         </p>
-        <RegisterActionDialog></RegisterActionDialog>
+        <CreateNote></CreateNote>
       </header>
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-md border"
+      />
+
       <p></p>
-      <section className="flex w-full flex-col gap-6">
+      <section className="flex w-full flex-col">
         {actions.map((action) => (
-          <HomeActionItem key={action.id} action={action} />
+          <>
+            <div className="flex flex-row items-center">
+              <ul>
+                <li key={action.id}>{action.title}</li>
+              </ul>
+              <TooltipProvider key={action.id}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Button className="" variant="ghost">
+                      i
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{action.points}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </>
         ))}
       </section>
     </main>
