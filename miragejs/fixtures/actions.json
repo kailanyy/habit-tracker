@@ -1,0 +1,23 @@
+[
+  {
+    "id": "1",
+    "type": "good",
+    "title": "Ação boa",
+    "points": 50,
+    "description": ""
+  },
+  {
+    "id": "2",
+    "type": "bad",
+    "title": "Ação ruim",
+    "points": -25,
+    "description": ""
+  },
+  {
+    "id": "3",
+    "type": "note",
+    "title": "Diário",
+    "points": 0,
+    "description": "Algo que fiz"
+  }
+]

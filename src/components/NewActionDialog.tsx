@@ -23,28 +23,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Action } from "@/src/types";
 
-import { createServer, Model } from "miragejs";
-
-createServer({
-  models: {
-    actions: Model,
-  },
-  routes() {
-    this.get("/api/actions", (schema) => {
-      return schema.actions.all();
-    });
-    this.post("/api/actions", (schema, request) => {
-      let attrs = JSON.parse(request.requestBody);
-      return schema.actions.create(attrs);
-    });
-  },
-});
-
 export const NewActionDialog = () => {
   const [selectedType, setSelectedType] = useState<Action["type"]>("good");
   const [actions, setActions] = useState<Action[]>([]);
   const [title, setTitle] = useState("");
-  const [weight, setWeight] = useState("");
+  const [points, setPoints] = useState("");
 
   const handleTypeChange = (newType: Action["type"]) => {
     setSelectedType(newType);
@@ -53,11 +36,22 @@ export const NewActionDialog = () => {
   const actionData = {
     type: selectedType,
     title: title,
-    weight: weight,
+    weight: points,
   };
-  const handleSave = () => {
-    setActions(actions);
-    console.log(actions);
+  const handleSave = async () => {
+    const payload = {
+      title,
+      type: selectedType,
+      weight: points,
+    };
+
+    await fetch("/api/actions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
   };
 
   useEffect(() => {
@@ -103,7 +97,7 @@ export const NewActionDialog = () => {
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right">Peso</Label>
             <Input
-              onChange={(e) => setWeight(e.target.value)}
+              onChange={(e) => setPoints(e.target.value)}
               type="number"
               className="col-span-3"
             />

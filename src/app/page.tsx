@@ -8,6 +8,7 @@ import { NewActionDialog } from "../components/NewActionDialog";
 import { CreateNote } from "../components/CreateNote";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { makeServer } from "../../miragejs/server";
 
 import {
   Tooltip,
@@ -16,9 +17,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+makeServer();
+
 export default function Home() {
   const [actions, setActions] = useState<Action[]>([]);
-  const points = actions.reduce(function (acc, obj) {
+  const points = actions?.reduce(function (acc, obj) {
     if (obj.points) return acc + obj.points;
     return acc;
   }, 0);
@@ -42,10 +45,9 @@ export default function Home() {
         onSelect={setDate}
         className="rounded-md border"
       />
-
       <p></p>
       <section className="flex w-full flex-col">
-        {actions.map((action) => (
+        {actions?.map((action) => (
           <>
             <div className="flex flex-row items-center">
               <ul>
