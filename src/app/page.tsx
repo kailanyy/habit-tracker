@@ -7,7 +7,6 @@ import { Action } from "@/src/types";
 import { NewActionDialog } from "../components/NewActionDialog";
 import { CreateNote } from "../components/CreateNote";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { makeServer } from "../../miragejs/server";
 
 import {
@@ -30,6 +29,14 @@ export default function Home() {
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
+  useEffect(() => {
+    fetch("/api/actions")
+      .then((res) => res.json())
+      .then((json) => {
+        setActions(json.actions);
+      });
+  }, []);
+
   return (
     <main className="flex min-h-screen flex-col gap-6 p-24">
       <header className="flex flex-col gap-6">
@@ -39,13 +46,12 @@ export default function Home() {
         </p>
         <CreateNote></CreateNote>
       </header>
-      <Calendar
+      {/* <Calendar
         mode="single"
         selected={date}
         onSelect={setDate}
         className="rounded-md border"
-      />
-      <p></p>
+      /> */}
       <section className="flex w-full flex-col">
         {actions?.map((action) => (
           <>

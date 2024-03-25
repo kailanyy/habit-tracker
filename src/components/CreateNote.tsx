@@ -17,8 +17,20 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { NewActionDialog } from "./NewActionDialog";
+import React, { useState, useEffect } from "react";
+import { Action } from "@/src/types";
 
 export const CreateNote = () => {
+  const [actions, setActions] = useState<Action[]>([]);
+
+  useEffect(() => {
+    fetch("/api/actions")
+      .then((res) => res.json())
+      .then((json) => {
+        setActions(json.actions);
+      });
+  }, []);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -30,18 +42,31 @@ export const CreateNote = () => {
         <DialogHeader>
           <DialogTitle>Nova ação</DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="pointer flex flex-row gap-4">
           <Select>
             <SelectTrigger>
-              <SelectValue></SelectValue>
+              <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="bad">a</SelectItem>
-              <SelectItem value="bad">a</SelectItem>
-              <SelectItem value="diary">b</SelectItem>
+              {actions?.map((action) => (
+                <SelectItem key={action.id} value={action.type}>
+                  {action.title}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
-          {/* <p>{action.title}</p> */}
+          <Select>
+            <SelectTrigger>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {actions?.map((action) => (
+                <SelectItem key={action.id} value={action.type}>
+                  {action.title}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <DialogFooter>
           <NewActionDialog />
