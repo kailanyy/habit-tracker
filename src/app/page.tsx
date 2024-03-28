@@ -32,15 +32,6 @@ export default function Home() {
       .then((res) => res.json())
       .then((json) => {
         console.log({ json });
-        setActions(json.actions);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch("/api/users")
-      .then((res) => res.json())
-      .then((json) => {
-        console.log({ json });
       });
   }, []);
 

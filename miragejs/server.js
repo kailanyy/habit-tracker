@@ -12,6 +12,12 @@ const config = (environment) => {
     models,
     routes,
     seeds,
+    serializers: {
+      entry: RestSerializer.extend({
+        include: ['action'],
+        embed: true,
+      }),
+    },
   };
 
   if (Object.keys(fixtures).length) {

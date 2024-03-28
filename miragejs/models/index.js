@@ -20,10 +20,10 @@ const models = {
     user: belongsTo(),
   }),
   product: Model,
-  actions: Model.extend({
-    entries: hasMany(),
+  action: Model.extend({
+    entry: hasMany(),
   }),
-  entries: Model.extend({
+  entry: Model.extend({
     action: belongsTo(),
   }),
 };
