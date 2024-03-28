@@ -26,10 +26,10 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Action } from "@/src/types";
+import { Action, ActionType } from "@/src/types";
 
 export const NewActionDialog = () => {
-  const [selectedType, setSelectedType] = useState<Action["type"]>("good");
+  const [selectedType, setSelectedType] = useState<ActionType>("good");
   const [title, setTitle] = useState("");
   const [points, setPoints] = useState(5);
 
@@ -64,7 +64,7 @@ export const NewActionDialog = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Nova ação</DialogTitle>
+          <DialogTitle>Novo tipo de ação</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Label>Nome</Label>
@@ -76,24 +76,14 @@ export const NewActionDialog = () => {
           </div>
           <Label>Tipo de ação</Label>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Toggle variant="outline">
+            <Toggle onClick={() => handleTypeChange("good")} variant="outline">
               <p>Boa</p>
             </Toggle>
-            <Toggle variant="outline">
+            <Toggle onClick={() => handleTypeChange("bad")} variant="outline">
               <p>Ruim</p>
             </Toggle>
-            <Toggle variant="outline">
-              <p>Diário</p>
-            </Toggle>
           </div>
-
           <Separator />
-
-          {/* <Select
-            onValueChange={(val) => handleTypeChange(val as Action["type"])}
-          >
-          </Select> */}
-
           <div className="grid grid-cols-4 items-center gap-4">
             <Drawer>
               <DrawerTrigger asChild>

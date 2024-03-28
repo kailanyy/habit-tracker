@@ -18,10 +18,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { NewActionDialog } from "./NewActionDialog";
 import React, { useState, useEffect } from "react";
-import { Action } from "@/src/types";
+import { Action, ActionType } from "@/src/types";
+import { Textarea } from "@/components/ui/textarea";
 
 export const CreateNote = () => {
   const [actions, setActions] = useState<Action[]>([]);
+  const [selectedType, setSelectedType] = useState<ActionType>("good");
 
   useEffect(() => {
     fetch("/api/actions")
@@ -30,6 +32,10 @@ export const CreateNote = () => {
         setActions(json.actions);
       });
   }, []);
+
+  const handleTypeChange = (newType: Action["type"]) => {
+    setSelectedType(newType);
+  };
 
   return (
     <Dialog>
@@ -43,7 +49,9 @@ export const CreateNote = () => {
           <DialogTitle>Nova ação</DialogTitle>
         </DialogHeader>
         <div className="pointer flex flex-row gap-4">
-          <Select>
+          <Select
+            onValueChange={(value) => handleTypeChange(value as ActionType)}
+          >
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -55,18 +63,23 @@ export const CreateNote = () => {
               ))}
             </SelectContent>
           </Select>
-          <Select>
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {actions?.map((action) => (
-                <SelectItem key={action.id} value={action.type}>
-                  {action.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+
+          {selectedType == "diary" ? (
+            <Textarea onChange={() => handleTypeChange("diary")} />
+          ) : (
+            <Select>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {actions?.map((action) => (
+                  <SelectItem key={action.id} value={action.type}>
+                    {action.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
         </div>
         <DialogFooter>
           <NewActionDialog />

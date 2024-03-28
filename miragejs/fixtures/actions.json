@@ -2,22 +2,20 @@
   {
     "id": "1",
     "type": "good",
-    "title": "Ação boa",
+    "title": "Saí pra correr",
     "points": 50,
     "description": ""
   },
   {
     "id": "2",
     "type": "bad",
-    "title": "Ação ruim",
+    "title": "Dormi tarde",
     "points": -25,
     "description": ""
   },
   {
     "id": "3",
-    "type": "note",
-    "title": "Diário",
-    "points": 0,
-    "description": "Algo que fiz"
+    "type": "diary",
+    "points": 0
   }
 ]

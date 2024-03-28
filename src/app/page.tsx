@@ -27,15 +27,24 @@ export default function Home() {
 
   const today = dayjs().format("DD/MM/YYYY");
 
-  const [date, setDate] = useState<Date | undefined>(new Date());
-
   useEffect(() => {
-    fetch("/api/actions")
+    fetch("/api/entries")
       .then((res) => res.json())
       .then((json) => {
+        console.log({ json });
         setActions(json.actions);
       });
   }, []);
+
+  useEffect(() => {
+    fetch("/api/users")
+      .then((res) => res.json())
+      .then((json) => {
+        console.log({ json });
+      });
+  }, []);
+
+  console.log(actions);
 
   return (
     <main className="flex min-h-screen flex-col gap-6 p-24">
@@ -46,25 +55,17 @@ export default function Home() {
         </p>
         <CreateNote></CreateNote>
       </header>
-      {/* <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="rounded-md border"
-      /> */}
       <section className="flex w-full flex-col">
         {actions?.map((action) => (
           <>
-            <div className="flex flex-row items-center">
+            <div key={action.id} className="flex flex-row items-center">
               <ul>
-                <li key={action.id}>{action.title}</li>
+                <li>{action.title}</li>
               </ul>
-              <TooltipProvider key={action.id}>
+              <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger>
-                    <Button className="" variant="ghost">
-                      i
-                    </Button>
+                    <Button variant="ghost">i</Button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>{action.points}</p>

@@ -20,7 +20,12 @@ const models = {
     user: belongsTo(),
   }),
   product: Model,
-  actions: Model,
+  actions: Model.extend({
+    entries: hasMany(),
+  }),
+  entries: Model.extend({
+    action: belongsTo(),
+  }),
 };
 
 export default models;

@@ -13,8 +13,17 @@ export default function routes() {
   this.resource('users');
   this.resource('products');
 
-  this.get('actions');
+  this.get('actions', (schema) => {
+    return schema.actions.all();
+  });
+  this.get('entries', (schema) => {
+    return schema.entries.all();
+  });
   this.post('actions', (schema, request) => {
+    let attrs = JSON.parse(request.requestBody);
+    return schema.actions.create(attrs);
+  });
+  this.put('actions', (schema, request) => {
     let attrs = JSON.parse(request.requestBody);
     return schema.actions.create(attrs);
   });
