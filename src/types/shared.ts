@@ -6,6 +6,11 @@ export type Action = {
   points?: number;
   description?: string;
 };
+export type Tag = {
+  id: number;
+  label: string;
+  value: string;
+};
 export type initialTags = [
   {
     activeTag: false;
