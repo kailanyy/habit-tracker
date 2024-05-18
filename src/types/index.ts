@@ -1,3 +1,3 @@
-import { Action, ActionType, initialTags, initialTasks } from "./shared";
+import { Action, ActionType, initialTags, Tag } from "./shared";
 
-export type { Action, ActionType, initialTags, initialTasks };
+export type { Action, ActionType, initialTags, Tag };
