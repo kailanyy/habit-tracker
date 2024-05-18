@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Action, ActionType } from "@/src/types";
+import React, { useState, useEffect } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Separator } from "@/components/ui/separator";
 import { SelectTag } from "./input/SelectTag";
@@ -7,43 +6,16 @@ import { Task } from "../types/shared";
 import { TASK_INITIAL_STATE } from "../utils";
 
 export const CreateNote = () => {
-  const [actions, setActions] = useState<Action[]>([]);
-  const [selectedType, setSelectedType] = useState<ActionType>("good");
   const [tasks, setTasks] = useState<Task[]>(TASK_INITIAL_STATE);
   const [tag, setTag] = useState<number>();
   const [title, setTitle] = useState("");
   const [remainingTasks, setRemainingTasks] = useState(0);
-  let nextId = 3;
-
-  useEffect(() => {
-    fetch("/api/actions")
-      .then((res) => res.json())
-      .then((json) => {
-        setActions(json.actions);
-      });
-  }, []);
 
   useEffect(() => {
     setRemainingTasks(
       tasks.filter((taskItem) => taskItem.done === false).length,
     );
   }, [tasks]);
-
-  const handleTypeChange = (newType: Action["type"]) => {
-    setSelectedType(newType);
-  };
-
-  // function handleAddTask() {
-  //   setTasks([
-  //     ...tasks,
-  //     {
-  //       title: title,
-  //       done: false,
-  //       id: nextId++,
-  //       tag: true,
-  //     },
-  //   ]);
-  // }
 
   function changeStatus(id: number) {
     const tmp = [...tasks];
@@ -55,10 +27,6 @@ export const CreateNote = () => {
       setTasks(tmp);
     }
   }
-
-  // function handleDeleteTask(id: number) {
-  //   setTasks(tasks.filter((t) => t.id !== id));
-  // }
 
   return (
     <>
@@ -142,38 +110,6 @@ export const CreateNote = () => {
             </div>
           );
         })}
-        {/* <List tasks={tasks} setTasks={setTasks} /> */}
-
-        {/* <Select
-            onValueChange={(value) => handleTypeChange(value as ActionType)}
-          >
-            <SelectTrigger>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {actions?.map((action) => (
-                <SelectItem key={action.id} value={action.type}>
-                  {action.title}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select> */}
-        {/* {selectedType == "diary" ? (
-            <Textarea onChange={() => handleTypeChange("diary")} />
-          ) : (
-            <Select>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {actions?.map((action) => (
-                  <SelectItem key={action.id} value={action.type}>
-                    {action.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )} */}
       </form>
     </>
   );
