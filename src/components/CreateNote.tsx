@@ -1,18 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Action, ActionType, initialTasks } from "@/src/types";
+import { Action, ActionType } from "@/src/types";
 import { Label } from "@radix-ui/react-label";
 import { Separator } from "@/components/ui/separator";
 import { SelectTag } from "./input/SelectTag";
+import { Task } from "../types/shared";
+import { TASK_INITIAL_STATE } from "../utils";
 
-// TODO Usar tags como filtro
-// TODO Select não funciona direito (boolean)
-
-export const CreateNote = ({ tags }) => {
+export const CreateNote = () => {
   const [actions, setActions] = useState<Action[]>([]);
   const [selectedType, setSelectedType] = useState<ActionType>("good");
-  const initialTasks = useState<initialTasks[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(TASK_INITIAL_STATE);
   const [tag, setTag] = useState<number>();
-  const [tasks, setTasks] = useState(initialTasks);
   const [title, setTitle] = useState("");
   const [remainingTasks, setRemainingTasks] = useState(0);
   let nextId = 3;
@@ -52,7 +50,7 @@ export const CreateNote = ({ tags }) => {
     const taskIndex = tmp.findIndex((task) => task.id === id);
     if (taskIndex !== -1) {
       const task = { ...tmp[taskIndex] };
-      task.done = true;
+      task.done = !task.done;
       tmp[taskIndex] = task;
       setTasks(tmp);
     }
@@ -113,7 +111,7 @@ export const CreateNote = ({ tags }) => {
                 <Label
                   className={`flex w-full justify-between font-semibold ${task.done == true ? "text-slate-400 line-through" : "text-black"}`}
                 >
-                  {/* {task.title} */}
+                  {task.title}
                   <div className="pointer duration-300 hover:text-red-500">
                     <button
                       className="rounded-full opacity-0 hover:opacity-100"
