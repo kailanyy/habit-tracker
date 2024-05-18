@@ -2,21 +2,20 @@ import React, { useState, useEffect, useRef } from "react";
 import { Action, ActionType, initialTasks } from "@/src/types";
 import { Label } from "@radix-ui/react-label";
 import { Separator } from "@/components/ui/separator";
-import { Tags } from "./Tags";
+import { SelectTag } from "./input/SelectTag";
+
+// TODO Usar tags como filtro
+// TODO Select não funciona direito (boolean)
 
 export const CreateNote = ({ tags }) => {
   const [actions, setActions] = useState<Action[]>([]);
   const [selectedType, setSelectedType] = useState<ActionType>("good");
   const initialTasks = useState<initialTasks[]>([]);
-
+  const [tag, setTag] = useState<number>();
   const [tasks, setTasks] = useState(initialTasks);
   const [title, setTitle] = useState("");
   const [remainingTasks, setRemainingTasks] = useState(0);
   let nextId = 3;
-
-  {
-    console.log("initialTasks", initialTasks);
-  }
 
   useEffect(() => {
     fetch("/api/actions")
@@ -69,7 +68,7 @@ export const CreateNote = ({ tags }) => {
         className="pointer flex flex-col"
         onSubmit={(e) => e.preventDefault()}
       >
-        <Tags></Tags>
+        <SelectTag value={tag} onChange={(id) => setTag(id)} />
         <div>
           {tasks.length > 0 && remainingTasks === 0 ? (
             "All done"
